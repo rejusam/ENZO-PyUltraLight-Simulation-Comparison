@@ -1,3 +1,6 @@
 # ENZO output files
 Enzo/**/DD*
 Enzo/**/*.cpu*
+# Local application documents
+APPLICATION_GUIDE.md
+COVER_LETTER.md
