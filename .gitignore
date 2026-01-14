@@ -1,0 +1,3 @@
+# ENZO output files
+Enzo/**/DD*
+Enzo/**/*.cpu*
