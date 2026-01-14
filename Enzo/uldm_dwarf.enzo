@@ -1,0 +1,50 @@
+# Problem Definition
+ProblemType                = 191      # FDM Collapse
+TopGridRank                = 3
+TopGridDimensions          = 128 128 128
+SelfGravity                = 0       # Gravity OFF initially (workaround for dt=0 bug)
+TopGridGravityBoundary     = 0       # Periodic
+LeftFaceBoundaryCondition  = 3 3 3   # Periodic
+RightFaceBoundaryCondition = 3 3 3
+NumberOfGhostZones         = 8       # Needed for FDM Laplacian
+
+# Cosmology (None for isolated halo)
+ComovingCoordinates        = 0
+GravitationalConstant      = 1
+
+# Time Stepping
+StopTime               = 0.05     # Short run for comparison
+dtDataDump             = 0.005
+DataDumpName           = DD
+DataDumpDir            = DD
+
+# Physics
+UseHydro               = 0
+QuantumPressure        = 1
+FDMMass                = 1.0      # Needs to match init.py scaling? 
+# In generate_ic.py we derived m_code = 1.38e22. 
+# Enzo's FDMMass parameter usually scales the term (hbar/m).
+# If QuantumPressure=1, Enzo adds Q = -(hbar/m)^2 * ...
+# We need to ensure hbar/m in Enzo matches our PyUltraLight alpha.
+# In PyUltraLight: alpha_code = 6.54e-02.
+# Enzo uses internal units. We must check how FDMMass relates.
+# Usually FDMMass is in units of 1e-22 eV *if* specific constants are used, 
+# OR it is just the dimensionless mass parameter if units are set correctly.
+# Given the complexity, we will set FDMMass such that the coefficient matches.
+# For now, let's use 1.0 and assume the Units defined below handle the scaling.
+
+# Units (From generate_ic.py output)
+# L=6.17e+22 cm, T=4.21e+16 s, Rho=8.46e-27 g/cm3
+# Enzo reads these to set internal conversion factors.
+DensityUnits = 8.46e-27
+LengthUnits = 6.17e+22
+TimeUnits = 4.21e+16
+
+# Timestep Control (Critical for FDM evolution)
+# Try using fixed timestep since adaptive timestep freezes at dt=0
+dtFixed = 1e-4
+CourantSafetyNumber = 0.5
+
+# Refinement (Static for comparison)
+StaticHierarchy = 1
+RefineBy = 2
